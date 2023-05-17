@@ -1,33 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
 import favorite from "./images/Favorite.png"
-import product from "./images/product.png"
-import star from "./images/Star.svg"
 import "./productItem.css"
 
 export const ProductItem = () => {
-  return (
-    <div className="productCard">
-      <div className ="topGroup">
-        <img src={product} className="productImg"/>
-        <img src={favorite} className="favoriteIcon"/>
-      </div>
-      <div className="productName">Item Name</div>
-      <div className="productDescription">About Item</div>
-      <div className="mediumGroup">
-        <img className="starIcon" src={star} />
-        <img className="starIcon1" src={star} />
-        <img className="starIcon1" src={star} />
-        <img className="starIcon1" src={star} />
-        <img className="starIcon4" src={star} />
-        <div className="productRating">5.0</div>
-      </div>
-      <div className="bottomGroup">
-        <div className="productPrice">100$</div>
-        <div className="addToCartWrapper">
-          <div className="addToCartButton">Add to card</div>
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api", {method: "GET",});
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const ProductItems = () => {
+    if (!data) {
+      // Return a loading indicator while waiting for data
+      return null;
+    }
+
+    return data.map((item) => {
+      return (
+        
+      <div className="productCard" key={item.id}>
+        
+        <div className="topGroup">
+        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+          <img src={item.image} className="productImg" alt="Product-alt" />
+          <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
+          </a>
+
         </div>
-      </div>
+        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+        <div className="productName">{item.item_name}</div>
+        <div className="productDescription">{item.description}</div>
+        <div className="productName">{item.location}</div>
+        <div className="bottomGroup">
+         <div className="productPrice">{item.price}</div>
+           <div >{item.currency}</div>
+       </div>
+       </a>
+       
+     </div>
+     
+    )}
+  );
+  };
+  useEffect(() => {
+    if (data) {
+      ProductItems();
+    }
+  });
+
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    <ProductItems />
     </div>
   );
 };

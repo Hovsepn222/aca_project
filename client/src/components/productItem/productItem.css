@@ -3,6 +3,10 @@
     height: 323px;
     gap: 6px;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-left: 80px;
+    flex-basis: '20%';
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
@@ -91,22 +95,6 @@
     min-height: 0px;
     flex-shrink: 0;
     box-sizing: border-box;
-  }
-  .productRating {
-    width: 11px;
-    height: 15px;
-    flex-shrink: 0;
-    align-self: flex-end;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 100;
-    font-family: Inter;
-    -webkit-text-stroke-color: transparent;
-    -webkit-text-stroke-width: 2px;
-    white-space: nowrap;
-    /* -webkit-background-clip: text; */
-    box-sizing: border-box;
-    background-image: transparent;
   }
   .bottomGroup {
     width: 250px;

@@ -1,10 +1,13 @@
 import sqlite3
 import hashlib
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+import requests
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
 api = Flask(__name__)
+CORS(app=api)
 salt = "5gz2"
 api.config["JWT_SECRET_KEY"] = "73bd912ydj30d12g"
 jwt = JWTManager(api)
@@ -16,7 +19,7 @@ def get_db_connection():
     return conn
 
 # SignUp
-@api.route('/signup', methods=["POST"])
+@api.route('/api/signup', methods=["POST"])
 def signup_create_account():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
@@ -36,7 +39,7 @@ def signup_create_account():
     return {"msg": "Account has been created"}, 201
 
 # Login 
-@api.route('/login', methods=["POST"])
+@api.route('/api/login', methods=["POST"])
 def login_create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None) + salt
@@ -51,38 +54,41 @@ def login_create_token():
     return response
 
 # Logout
-@api.route("/logout", methods=["POST"])
+@api.route("/api/logout", methods=["POST"])
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
     return response
 
 # Home Items
-@api.route("/", methods=["GET"])
+@api.route("/api", methods=["GET"])
 def home_page():
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable').fetchall()
-    res = {}
+    res = []
     for row in items:
-        res[row['ID']] = {
-            "user_id": row['UserID'],
-            "category_id": row['CatagoryID'],
-            "item_name": row['ItemName'],
-            "description": row['Description'],
-            "price": row["Price"],
-            "currency": row['Currency'],
-            "location": row['Location']
-        }
+        # if requests.get(row['image']).status_code == '200':
+            res.append({
+                "id": row["ID"],
+                "user_id": row['UserID'],
+                "category_id": row['CatagoryID'],
+                "item_name": row['ItemName'],
+                "description": row['Description'],
+                "price": row["Price"],
+                "currency": row['Currency'],
+                "location": row['Location'],
+                "image": row["Image"]
+            })
     return jsonify(res)
 
 # Catagory Items
-@api.route("/category/<category_id>", methods=["GET"])
+@api.route("/api/category/<category_id>", methods=["GET"])
 def catagory_pages(category_id):
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable WHERE CatagoryID = ?', [category_id]).fetchall()
-    res = {}
+    res = []
     for row in items:
-        res[row['ID']] = {
+        res.append({
             "user_id": row['UserID'],
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],
@@ -90,18 +96,36 @@ def catagory_pages(category_id):
             "price": row["Price"],
             "currency": row['Currency'],
             "location": row['Location'] 
-        }
+        })
     return jsonify(res)
 
+# Specific Item
+@api.route("/api/item/<item_id>", methods=["GET"])
+def item_page(item_id):
+    conn = get_db_connection()
+    item = conn.execute('SELECT * FROM ItemsTable WHERE ID = ?', [item_id]).fetchone()
+    item = [{
+            "id": item['ID'],
+            "user_id": item['UserID'],
+            "category_id": item['CatagoryID'],
+            "item_name": item['ItemName'],
+            "description": item['Description'],
+            "price": item["Price"],
+            "currency": item['Currency'],
+            "location": item['Location'] 
+        }]
+    return jsonify(item)
+
+
 # User Listings
-@api.route('/mylistings/<user_id>', methods=["GET"])
+@api.route('/api/mylistings/<user_id>', methods=["GET"])
 # @jwt_required()
 def user_listings(user_id):
     conn = get_db_connection()
     items = conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user_id]).fetchall()
-    res = {}
+    res = []
     for row in items:
-        res[row['ID']] = {
+        res.append({
             "user_id": row['UserID'],
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],
@@ -109,17 +133,17 @@ def user_listings(user_id):
             "price": row["Price"],
             "currency": row['Currency'],
             "location": row['Location'] 
-        }
+        })
     return jsonify(res)
 
 # Search Items
-@api.route('/search/<search_keyword>', methods=["POST"])
+@api.route('/api/search/<search_keyword>', methods=["POST"])
 def search_listings(search_keyword):
     conn = get_db_connection()
     items = conn.execute("SELECT * FROM ItemsTable WHERE ItemName LIKE ?", ['%' + search_keyword + '%']).fetchall()
-    res = {}
+    res = []
     for row in items:
-        res[row['ID']] = {
+        res.append({
             "user_id": row['UserID'],
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],
@@ -127,11 +151,11 @@ def search_listings(search_keyword):
             "price": row["Price"],
             "currency": row['Currency'],
             "location": row['Location'] 
-        }
+        })
     return jsonify(res)
 
 # Delete Items
-@api.route('/delete/<item_id>', methods=["DELETE"])
+@api.route('/api/delete/<item_id>', methods=["DELETE"])
 # @jwt_required()
 def delete_listing(item_id):
     user_id = request.json.get("user_id", None)
@@ -146,7 +170,7 @@ def delete_listing(item_id):
     return jsonify({"message": "Item deleted successfully"})
 
 # Add Item
-@api.route('/add', methods=["POST"])
+@api.route('/api/add', methods=["POST"])
 # @jwt_required()
 def add_item():
     data = request.get_json()
