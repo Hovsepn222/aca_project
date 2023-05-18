@@ -9,34 +9,36 @@ export const ProductItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api", {method: "GET",});
-        const jsonData = await response.json();
-        setData(jsonData);
+        const url = "https://1607-195-250-71-210.ngrok-free.app/api";
+        const res = await fetch(url, {
+          method: 'GET',    
+          withCredentials: true,    
+          crossorigin: true,    
+          mode: 'no-cors',
+        });
+        // const jsonData = await res.json();
+        console.log(res);
+        // setData(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
-    fetchData();
+    fetchData().then(items => items);
   }, []);
 
   const ProductItems = () => {
     if (!data) {
       // Return a loading indicator while waiting for data
-      return null;
+      return (<p>Loading</p>);
     }
-
     return data.map((item) => {
       return (
-        
       <div className="productCard" key={item.id}>
-        
         <div className="topGroup">
         <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
           <img src={item.image} className="productImg" alt="Product-alt" />
           <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
           </a>
-
         </div>
         <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
         <div className="productName">{item.item_name}</div>
@@ -55,6 +57,7 @@ export const ProductItem = () => {
   };
   useEffect(() => {
     if (data) {
+      console.log(data);
       ProductItems();
     }
   });

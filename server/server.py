@@ -2,15 +2,24 @@ import sqlite3
 import hashlib
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import requests
+import logging
+from flask_ngrok import run_with_ngrok
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
 api = Flask(__name__)
-CORS(app=api)
 salt = "5gz2"
+# logging.basicConfig(level=logging.INFO)
+# logging.getLogger('flask_cors').level = logging.DEBUG
+# cors = CORS(api)
+# run_with_ngrok(api)
 api.config["JWT_SECRET_KEY"] = "73bd912ydj30d12g"
 jwt = JWTManager(api)
+
+@api.after_request
+def set_headers(response):
+    response.headers["Referrer-Policy"] = 'no-referrer'
+    return response
 
 # Connecting to the database
 def get_db_connection():
@@ -62,6 +71,7 @@ def logout():
 
 # Home Items
 @api.route("/api", methods=["GET"])
+# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def home_page():
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable').fetchall()
@@ -191,3 +201,8 @@ def add_item():
         )
         conn.commit()
         return jsonify({"message": "Item added successfully"}), 201
+    
+if __name__ == '__main__':
+    api.run()
+
+# change ngrok port to 6k
