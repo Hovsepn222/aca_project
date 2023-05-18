@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
 import favorite from "./images/Favorite.png"
+import {home, POST} from "../../apiConfig.js"
 import "./productItem.css"
 
 export const ProductItem = () => {
@@ -9,11 +10,7 @@ export const ProductItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = "https://aca5-195-250-71-210.ngrok-free.app/api";
-        const res = await fetch(url, {
-          method: 'POST',
-          mode: 'cors',
-        });
+        const res = await fetch(home, POST);
         const jsonData = await res.json();
         setData(jsonData);
       } catch (error) {
