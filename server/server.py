@@ -1,22 +1,18 @@
 import sqlite3
 import hashlib
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-import logging
-from flask_ngrok import run_with_ngrok
+from flask_cors import CORS, cross_origin
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
-api = Flask(__name__)
+app = Flask(__name__)
 salt = "5gz2"
-# logging.basicConfig(level=logging.INFO)
-# logging.getLogger('flask_cors').level = logging.DEBUG
-# cors = CORS(api)
-# run_with_ngrok(api)
-api.config["JWT_SECRET_KEY"] = "73bd912ydj30d12g"
-jwt = JWTManager(api)
+cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:3000"]}})
+app.config["JWT_SECRET_KEY"] = "73bd912ydj30d12g"
+jwt = JWTManager(app)
 
-@api.after_request
+@app.after_request
+@cross_origin()
 def set_headers(response):
     response.headers["Referrer-Policy"] = 'no-referrer'
     return response
@@ -28,7 +24,8 @@ def get_db_connection():
     return conn
 
 # SignUp
-@api.route('/api/signup', methods=["POST"])
+@app.route('/api/signup', methods=["POST"])
+@cross_origin()
 def signup_create_account():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
@@ -48,7 +45,8 @@ def signup_create_account():
     return {"msg": "Account has been created"}, 201
 
 # Login 
-@api.route('/api/login', methods=["POST"])
+@app.route('/api/login', methods=["POST"])
+@cross_origin()
 def login_create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None) + salt
@@ -63,21 +61,22 @@ def login_create_token():
     return response
 
 # Logout
-@api.route("/api/logout", methods=["POST"])
+@app.route("/api/logout", methods=["POST"])
+@cross_origin()
 def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
     return response
 
 # Home Items
-@api.route("/api", methods=["GET"])
+@app.route("/api", methods=["POST", "GET"])
+@cross_origin()
 # @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def home_page():
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable').fetchall()
     res = []
     for row in items:
-        # if requests.get(row['image']).status_code == '200':
             res.append({
                 "id": row["ID"],
                 "user_id": row['UserID'],
@@ -92,7 +91,8 @@ def home_page():
     return jsonify(res)
 
 # Catagory Items
-@api.route("/api/category/<category_id>", methods=["GET"])
+@app.route("/api/category/<category_id>", methods=["GET"])
+@cross_origin()
 def catagory_pages(category_id):
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable WHERE CatagoryID = ?', [category_id]).fetchall()
@@ -110,7 +110,8 @@ def catagory_pages(category_id):
     return jsonify(res)
 
 # Specific Item
-@api.route("/api/item/<item_id>", methods=["GET"])
+@app.route("/api/item/<item_id>", methods=["GET"])
+@cross_origin()
 def item_page(item_id):
     conn = get_db_connection()
     item = conn.execute('SELECT * FROM ItemsTable WHERE ID = ?', [item_id]).fetchone()
@@ -128,7 +129,8 @@ def item_page(item_id):
 
 
 # User Listings
-@api.route('/api/mylistings/<user_id>', methods=["GET"])
+@app.route('/api/mylistings/<user_id>', methods=["GET"])
+@cross_origin()
 # @jwt_required()
 def user_listings(user_id):
     conn = get_db_connection()
@@ -147,7 +149,8 @@ def user_listings(user_id):
     return jsonify(res)
 
 # Search Items
-@api.route('/api/search/<search_keyword>', methods=["POST"])
+@app.route('/api/search/<search_keyword>', methods=["POST"])
+@cross_origin()
 def search_listings(search_keyword):
     conn = get_db_connection()
     items = conn.execute("SELECT * FROM ItemsTable WHERE ItemName LIKE ?", ['%' + search_keyword + '%']).fetchall()
@@ -165,7 +168,8 @@ def search_listings(search_keyword):
     return jsonify(res)
 
 # Delete Items
-@api.route('/api/delete/<item_id>', methods=["DELETE"])
+@app.route('/api/delete/<item_id>', methods=["DELETE"])
+@cross_origin()
 # @jwt_required()
 def delete_listing(item_id):
     user_id = request.json.get("user_id", None)
@@ -180,7 +184,8 @@ def delete_listing(item_id):
     return jsonify({"message": "Item deleted successfully"})
 
 # Add Item
-@api.route('/api/add', methods=["POST"])
+@app.route('/api/add', methods=["POST"])
+@cross_origin()
 # @jwt_required()
 def add_item():
     data = request.get_json()
@@ -203,6 +208,4 @@ def add_item():
         return jsonify({"message": "Item added successfully"}), 201
     
 if __name__ == '__main__':
-    api.run()
-
-# change ngrok port to 6k
+    app.run(debug=True)

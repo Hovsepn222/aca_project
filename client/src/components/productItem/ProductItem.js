@@ -9,21 +9,18 @@ export const ProductItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = "https://1607-195-250-71-210.ngrok-free.app/api";
+        const url = "https://aca5-195-250-71-210.ngrok-free.app/api";
         const res = await fetch(url, {
-          method: 'GET',    
-          withCredentials: true,    
-          crossorigin: true,    
-          mode: 'no-cors',
+          method: 'POST',
+          mode: 'cors',
         });
-        // const jsonData = await res.json();
-        console.log(res);
-        // setData(jsonData);
+        const jsonData = await res.json();
+        setData(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData().then(items => items);
+    fetchData()
   }, []);
 
   const ProductItems = () => {
@@ -57,7 +54,6 @@ export const ProductItem = () => {
   };
   useEffect(() => {
     if (data) {
-      console.log(data);
       ProductItems();
     }
   });
