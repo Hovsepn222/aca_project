@@ -90,7 +90,7 @@ def home_page():
     return jsonify(res)
 
 # Catagory Items
-@app.route("/api/category/<category_id>", methods=["GET"])
+@app.route("/api/category/<category_id>", methods=["GET", "POST"])
 @cross_origin()
 def catagory_pages(category_id):
     conn = get_db_connection()
@@ -109,7 +109,7 @@ def catagory_pages(category_id):
     return jsonify(res)
 
 # Specific Item
-@app.route("/api/item/<item_id>", methods=["GET"])
+@app.route("/api/item/<item_id>", methods=["GET", "POST"])
 @cross_origin()
 def item_page(item_id):
     conn = get_db_connection()
@@ -128,7 +128,7 @@ def item_page(item_id):
 
 
 # User Listings
-@app.route('/api/mylistings/<user_id>', methods=["GET"])
+@app.route('/api/mylistings/<user_id>', methods=["GET", "POST"])
 @cross_origin()
 # @jwt_required()
 def user_listings(user_id):
@@ -183,7 +183,7 @@ def delete_listing(item_id):
     return jsonify({"message": "Item deleted successfully"})
 
 # Add Item
-@app.route('/api/add', methods=["POST"])
+@app.route('/api/add', methods=["POST", "GET"])
 @cross_origin()
 # @jwt_required()
 def add_item():
