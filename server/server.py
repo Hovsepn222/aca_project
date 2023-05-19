@@ -71,7 +71,6 @@ def logout():
 # Home Items
 @app.route("/api", methods=["POST", "GET"])
 @cross_origin()
-# @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def home_page():
     conn = get_db_connection()
     items = conn.execute('SELECT * FROM ItemsTable').fetchall()
@@ -149,7 +148,7 @@ def user_listings(user_id):
     return jsonify(res)
 
 # Search Items
-@app.route('/api/search/<search_keyword>', methods=["POST"])
+@app.route('/api/search/<search_keyword>', methods=["POST", "GET"])
 @cross_origin()
 def search_listings(search_keyword):
     conn = get_db_connection()

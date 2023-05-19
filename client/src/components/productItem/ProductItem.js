@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
 import favorite from "./images/Favorite.png"
-import {home, POST} from "../../apiConfig.js"
+import {apiUrl, POST} from "../../apiConfig.js"
 import "./productItem.css"
 
 export const ProductItem = () => {
@@ -10,7 +10,7 @@ export const ProductItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(home, POST);
+        const res = await fetch(apiUrl, POST);
         const jsonData = await res.json();
         setData(jsonData);
       } catch (error) {

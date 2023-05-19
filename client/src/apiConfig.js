@@ -1,6 +1,4 @@
-export const url = "https://aca5-195-250-71-210.ngrok-free.app"
-export const home = `${url}/api`
-
+export const apiUrl = "https://aca5-195-250-71-210.ngrok-free.app/api"
 
 export const POST = {
     method: 'POST',
