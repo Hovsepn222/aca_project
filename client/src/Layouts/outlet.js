@@ -1,5 +1,6 @@
 import {Outlet} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import Header from "../components/Header/Header"
 import React from "react";
 
 export default function NavBarLayout() {
@@ -7,7 +8,7 @@ export default function NavBarLayout() {
     const dispatch = useDispatch(); // to dispatch login state
     return (
         <div>
-            {/* <p>{user ? 'Login': 'Logout'}</p> */}
+            <Header />
             <Outlet/>
         </div>
     )

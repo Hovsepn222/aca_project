@@ -102,9 +102,10 @@ def catagory_pages(category_id):
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],
             "description": row['Description'],
-            "price": row["Price"],
+            "price": row['Price'],
             "currency": row['Currency'],
-            "location": row['Location'] 
+            "location": row['Location'],
+            "image": row['Image']
         })
     return jsonify(res)
 
@@ -162,7 +163,8 @@ def search_listings(search_keyword):
             "description": row['Description'],
             "price": row["Price"],
             "currency": row['Currency'],
-            "location": row['Location'] 
+            "location": row['Location'],
+            "image": row['Image']
         })
     return jsonify(res)
 

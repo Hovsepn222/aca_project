@@ -7,9 +7,7 @@ import { ProductItem } from './components/productItem/ProductItem';
 export default function App() {
   return (
     <div >
-      <Header />
       <CarouselComponent />
-      
       <ProductItem />
     </div>
   )

@@ -8,11 +8,15 @@ import store from './redux/store'
 import NotFound from "./components/404handler";
 import NavBarLayout from "./Layouts/outlet";
 import Footer from './components/footer';
+import Category from './components/category';
+import SearchedItems from './components/searchedItems';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path='/' element={<NavBarLayout/>}> // Outlet Component Navigation Bar
             <Route index element={<App/>}/>
+            <Route path="/category/:id" element={<Category/>} />
+            <Route path="/search/:searchKeyword" element={<SearchedItems/>} />
             <Route path='*' element={<NotFound/>}/>
         </Route>
     )

@@ -1,12 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import "./Header.css";
 import SideNavigation from '../sidenav'
 import { GoSearch } from "react-icons/go";
 import { FaUserCircle } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { MdLanguage } from "react-icons/md";
+import { apiUrl, POST } from "../../apiConfig";
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [data, setData] = useState(null);
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    const url = `/search/${searchQuery}`;
+    navigate(url);
+    console.log(data);
+    setSearchQuery('');
+  };
+
   return (
     <header className="header">
       <div className='sidenav-div'>
@@ -20,8 +33,10 @@ export default function Header() {
           type="text"
           placeholder="Search..."
           className="searchBar-input"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <button className="searchBar-btn">
+        <button className="searchBar-btn" onClick={handleSearch}>
           {<GoSearch className="search-btn" />}
         </button>
       </div>

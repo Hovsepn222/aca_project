@@ -60,16 +60,16 @@ const SideNavigation = () => {
             <ListItemText primary="Categories" style={{color:'white'}} />
           </ListItem>
           <List component="div" disablePadding>
-            <ListItem button component={Link} to="/catagories/cars">
+            <ListItem button component={Link} to="/category/1">
               <ListItemText primary="Cars" style={{color:'white'}}/>
             </ListItem>
-            <ListItem button component={Link} to="/catagories/electronics">
+            <ListItem button component={Link} to="/category/2">
               <ListItemText primary="Electronics" style={{color:'white'}}/>
             </ListItem>
-            <ListItem button component={Link} to="/catagories/realstate">
+            <ListItem button component={Link} to="/category/4">
               <ListItemText primary="Real State" style={{color:'white'}}/>
             </ListItem>
-            <ListItem button component={Link} to="/catagories/homeaccessories">
+            <ListItem button component={Link} to="/category/3">
               <ListItemText primary="Home & Accessories" style={{color:'white'}}/>
             </ListItem>
           </List>
