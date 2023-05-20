@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import favorite from "./images/Favorite.png"
 import {apiUrl, POST} from "../../apiConfig.js"
 import "./productItem.css"
+import LinearColor from "../loader";
 
 export const ProductItem = () => {
   const [data, setData] = useState(null);
@@ -22,8 +23,7 @@ export const ProductItem = () => {
 
   const ProductItems = () => {
     if (!data) {
-      // Return a loading indicator while waiting for data
-      return (<p>Loading</p>);
+      return (<LinearColor />);
     }
     return data.map((item) => {
       return (

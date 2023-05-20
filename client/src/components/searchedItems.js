@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { apiUrl, POST } from '../apiConfig';
 import { useEffect, useState } from 'react';
 import favorite from "./productItem/images/Favorite.png";
+import LinearColor from './loader';
 
 const SearchedItems = () => {
   const { searchKeyword } = useParams();
@@ -22,8 +23,7 @@ const SearchedItems = () => {
 
   const ProductItems = () => {
     if (!data) {
-      // Return a loading indicator while waiting for data
-      return (<p>Loading</p>);
+      return (<LinearColor/>);
     }
     return data.map((item) => {
       return (

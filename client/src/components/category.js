@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { apiUrl, POST } from '../apiConfig';
 import { useEffect, useState } from 'react';
 import favorite from "./productItem/images/Favorite.png"
+import LinearColor from './loader';
 
 const Category = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const Category = () => {
   const ProductItems = () => {
     if (!data) {
       // Return a loading indicator while waiting for data
-      return (<p>Loading</p>);
+      return (<LinearColor />);
     }
     return data.map((item) => {
       return (
