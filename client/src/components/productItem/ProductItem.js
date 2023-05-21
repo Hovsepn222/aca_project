@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
-import favorite from "./images/Favorite.png"
 import {apiUrl, POST} from "../../apiConfig.js"
 import "./productItem.css"
 import LinearColor from "../loader";
+import ItemCard from "../itemCard.js"
+
 
 export const ProductItem = () => {
   const [data, setData] = useState(null);
@@ -11,7 +12,7 @@ export const ProductItem = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(apiUrl, POST);
+        const res = await fetch(`${apiUrl}/home`, POST);
         const jsonData = await res.json();
         setData(jsonData);
       } catch (error) {
@@ -25,30 +26,26 @@ export const ProductItem = () => {
     if (!data) {
       return (<LinearColor />);
     }
-    return data.map((item) => {
-      return (
-      <div className="productCard" key={item.id}>
-        <div className="topGroup">
-        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-          <img src={item.image} className="productImg" alt="Product-alt" />
-          <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-          </a>
-        </div>
-        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-        <div className="productName">{item.item_name}</div>
-        <div className="productDescription">{item.description}</div>
-        <div className="productName">{item.location}</div>
-        <div className="bottomGroup">
-         <div className="productPrice">{item.price}</div>
-           <div >{item.currency}</div>
-       </div>
-       </a>
-       
-     </div>
-     
-    )}
-  );
+    
+    return (
+      <>
+      
+      {data.map((item) => {
+        return (
+      <ItemCard 
+      id={item.id}
+      userId={item.user_id}
+      categoryId={item.category_id}
+      itemName={item.item_name}
+      description={item.description}
+      price={item.price}
+      currency={item.currency}
+      location={item.location}
+      image={item.image}/>)})}
+    </>
+    )
   };
+
   useEffect(() => {
     if (data) {
       ProductItems();

@@ -68,12 +68,36 @@ def logout():
     unset_jwt_cookies(response)
     return response
 
-# Home Items
+# All Items
 @app.route("/api", methods=["POST", "GET"])
+@cross_origin()
+def all_page():
+    conn = get_db_connection()
+    items = conn.execute('SELECT * FROM ItemsTable').fetchall()
+    res = []
+    for row in items:
+            res.append({
+                "id": row["ID"],
+                "user_id": row['UserID'],
+                "category_id": row['CatagoryID'],
+                "item_name": row['ItemName'],
+                "description": row['Description'],
+                "price": row["Price"],
+                "currency": row['Currency'],
+                "location": row['Location'],
+                "image": row["Image"]
+            })
+    return jsonify(res)
+
+# Home Items (Returns 8 Recent Items From Each Category)
+@app.route("/api/home", methods=["POST", "GET"])
 @cross_origin()
 def home_page():
     conn = get_db_connection()
-    items = conn.execute('SELECT * FROM ItemsTable').fetchall()
+    items = conn.execute('''
+    SELECT * FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID ORDER BY Price DESC ) AS rn FROM ItemsTable WHERE Currency = 'USD') 
+        AS subquery WHERE rn <= 8;''').fetchall()
     res = []
     for row in items:
             res.append({
