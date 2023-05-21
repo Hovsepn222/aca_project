@@ -7,6 +7,19 @@ import { RiShoppingCartLine } from "react-icons/ri";
 import { MdLanguage } from "react-icons/md";
 import { apiUrl, POST } from "../../apiConfig";
 import { useNavigate } from 'react-router-dom';
+import styled from "styled-components";
+import {MdOutlineAddToPhotos} from "react-icons/md"
+import {CgProfile} from "react-icons/cg"
+
+const NavbarHome = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 12px;
+  position: absolute;
+  left: 4%;
+`;
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,8 +29,11 @@ export default function Header() {
   const handleSearch = () => {
     const url = `/search/${searchQuery}`;
     navigate(url);
-    console.log(data);
     setSearchQuery('');
+  };
+
+  const navigateToHome = () => {
+    navigate('/');
   };
 
   return (
@@ -26,12 +42,14 @@ export default function Header() {
       <SideNavigation/>
       </div>
       <div className="navbar-div">
-        <div className="navbar-home">Home</div>
+        <div className="navbar-home" href="/">
+          <NavbarHome onClick={navigateToHome}>Home</NavbarHome>
+        </div>
       </div>
       <div className="searchBar-div">
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search"
           className="searchBar-input"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -40,11 +58,10 @@ export default function Header() {
           {<GoSearch className="search-btn" />}
         </button>
       </div>
-      <div className="lang-div">{<MdLanguage className="lang-icon" />}</div>
-      <div className="cart-div">
-        {<RiShoppingCartLine className="cart-icon" />}
+      <div className="add-div">
+        {<MdOutlineAddToPhotos className="add-icon" />}
       </div>
-      <div className="user-div">{<FaUserCircle className="user-icon" />}</div>
+      <div className="user-div">{<CgProfile className="user-icon" />}</div>
     </header>
   );
 }

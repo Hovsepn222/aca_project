@@ -13,11 +13,11 @@ import SearchedItems from './components/searchedItems';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path='/' element={<NavBarLayout/>}>
-            <Route index element={<App/>}/>
+        <Route path='/' element={<NavBarLayout />}>
+            <Route index element={<App />}/>
             <Route path="/category/:id" element={<Category/>} />
             <Route path="/search/:searchKeyword" element={<SearchedItems/>} />
-            <Route path='*' element={<NotFound/>}/>
+            <Route path='*' element={<NotFound />}/>
         </Route>
     )
 )
