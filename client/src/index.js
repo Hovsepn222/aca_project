@@ -14,6 +14,7 @@ import UserListings from './components/userListings';
 import DeleteListing from './components/deleteListing';
 import { Login } from './components/Login/Login';
 import { SignUp } from './components/SignUp/SignUp';
+import Logout from './components/logout'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
             <Route path='/mylistings' element={<UserListings/>}/>
             <Route path='/delete/:id' element={<DeleteListing/>}/>
             <Route path="/search/:searchKeyword" element={<SearchedItems/>}/>
+            <Route path='/logout' element={<Logout/>}/>
             <Route path='*' element={<NotFound />}/>
         </Route>
     )
