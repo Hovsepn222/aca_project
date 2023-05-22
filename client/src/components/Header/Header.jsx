@@ -1,16 +1,18 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./Header.css";
-import SideNavigation from '../sidenav'
+import SideNavigation from "../sidenav";
 import { GoSearch } from "react-icons/go";
 import { FaUserCircle } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { MdLanguage } from "react-icons/md";
 import { apiUrl, POST } from "../../apiConfig";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import {MdOutlineAddToPhotos} from "react-icons/md"
-import {CgProfile} from "react-icons/cg"
-import getToken, {setToken, removeToken} from '../useToken'
+import { MdOutlineAddToPhotos } from "react-icons/md";
+import { CgProfile } from "react-icons/cg";
+import getToken, { setToken, removeToken } from "../useToken";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const NavbarHome = styled.div`
   display: flex;
@@ -23,24 +25,46 @@ const NavbarHome = styled.div`
 `;
 
 export default function Header() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState(null);
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSearch = () => {
     const url = `/search/${searchQuery}`;
     navigate(url);
-    setSearchQuery('');
+    setSearchQuery("");
   };
 
   const navigateToHome = () => {
-    navigate('/');
+    navigate("/");
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMyListings = () => {
+    navigate("/mylistings");
+    handleMenuClose();
+  };
+  const handleLogin = () => {
+    navigate("/login");
+    handleMenuClose();
+  };
+  const handleSignup = () => {
+    navigate("/signup");
+    handleMenuClose();
   };
 
   return (
     <header className="header">
-      <div className='sidenav-div'>
-      <SideNavigation/>
+      <div className="sidenav-div">
+        <SideNavigation />
       </div>
       <div className="navbar-div">
         <div className="navbar-home" href="/">
@@ -62,7 +86,18 @@ export default function Header() {
       <div className="add-div">
         {<MdOutlineAddToPhotos className="add-icon" />}
       </div>
-      <div className="user-div">{<CgProfile className="user-icon" />}</div>
+      <div className="user-div">
+        <CgProfile className="user-icon" onClick={handleMenuOpen} />
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMyListings}>My Listings</MenuItem>
+          <MenuItem onClick={handleLogin}>Login</MenuItem>
+          <MenuItem onClick={handleSignup}>SignUp</MenuItem>
+        </Menu>
+      </div>
     </header>
   );
 }
