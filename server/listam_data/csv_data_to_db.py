@@ -8,11 +8,10 @@ files = os.listdir(cwd)  # Get all the files in that directory
 
 def add_toDB(list_am_csv):
     # Connect to the SQLite database
-    conn = sqlite3.connect('/Users/hovsepnajarian/Documents/GitHub/Project/server/db/database.db')
+    conn = sqlite3.connect('/Users/hovsepnajarian/Documents/GitHub/aca_project/server/db/database.db')
     cursor = conn.cursor()
-    print('Connected to db')
     # Open the CSV file and read its contents
-    csv_data = '/Users/hovsepnajarian/Documents/GitHub/Project/server/listam_data/list_data.csv'
+    csv_data = '/Users/hovsepnajarian/Documents/GitHub/aca_project/server/listam_data/list_data.csv'
     with open(csv_data, 'r') as data:
         csv_data = csv.reader(data)
         next(csv_data) # Skip the header row if present

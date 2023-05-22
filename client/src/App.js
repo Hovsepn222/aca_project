@@ -12,7 +12,6 @@ export default function App() {
       <CarouselComponent />
       <Typography variant="h2" sx={{ color: "#86c232", textAlign: "center", mb: "50px", mt: "50px" }}>Recently Added</Typography>
       <ProductItem />
-      {console.log(getToken())}
     </div>
   )
 }

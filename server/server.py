@@ -2,6 +2,7 @@ import sqlite3
 import hashlib
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
+from datetime import timedelta
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
@@ -9,6 +10,7 @@ app = Flask(__name__)
 salt = "5gz2"
 cors = CORS(app, resources={r"/*": {"origins": ["http://localhost:3000"]}})
 app.config["JWT_SECRET_KEY"] = "73bd912ydj30d12g"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=100)
 jwt = JWTManager(app)
 
 @app.after_request
@@ -101,7 +103,7 @@ def home_page():
     conn = get_db_connection()
     items = conn.execute('''
     SELECT * FROM (
-        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID ORDER BY Price DESC ) AS rn FROM ItemsTable WHERE Currency = 'USD') 
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID) AS rn FROM ItemsTable WHERE Currency = 'USD') 
         AS subquery WHERE rn <= 8;''').fetchall()
     res = []
     for row in items:
@@ -245,6 +247,58 @@ def add_item():
         )
         conn.commit()
         return jsonify({"message": "Item added successfully"}), 201
+    
+# Save Item as Favorite
+@app.route('/api/addfavorite/<item_id>', methods=["POST"])
+@cross_origin()
+@jwt_required()
+def add_favorite(item_id):
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
+    item = conn.execute("SELECT * FROM ItemsTable WHERE ID = ?", [item_id]).fetchone()
+    if item is None:
+            return jsonify({"message": "Item not found"}), 404
+    elif conn.execute("SELECT * FROM FavoriteTable WHERE UserID = ? AND ItemID = ?", [ user['ID'], item_id]).fetchone():
+        conn.execute("DELETE FROM FavoriteTable  WHERE UserID = ? AND ItemID = ?", [user['ID'], item_id])
+        conn.commit()
+        return jsonify({"message": "Item removed from favorites"}), 201
+    conn.execute("INSERT INTO FavoriteTable (ItemID, UserID)" 
+                "VALUES (?, ?)",
+                (item_id, user['ID']))
+    conn.commit()
+    return jsonify({"message": "Item added to favorites"}), 201
+    
+# Favorite Listings
+@app.route('/api/favorites', methods=["GET", "POST"])
+@cross_origin()
+@jwt_required()
+def user_favorites():
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
+    res = []
+    if conn.execute("SELECT * FROM FavoriteTable WHERE UserID = ?", [user['ID']]).fetchall():
+        fav_items = conn.execute("""
+            SELECT i.* 
+            FROM ItemsTable AS i
+            INNER JOIN FavoriteTable AS f ON i.ID = f.ItemID
+            WHERE f.UserID = ?
+            """, [user['ID']]).fetchall()
+        for row in fav_items:
+            res.append({
+                "id": row['ID'],
+                "user_id": row['UserID'],
+                "category_id": row['CatagoryID'],
+                "item_name": row['ItemName'],
+                "description": row['Description'],
+                "price": row["Price"],
+                "currency": row['Currency'],
+                "location": row['Location'],
+                "image": row['Image']
+            })
+        return jsonify(res)
+    return jsonify({"message": 'No favorite items'})
     
 if __name__ == '__main__':
     app.run(debug=True)

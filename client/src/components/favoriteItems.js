@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import favorite from "./productItem/images/Favorite.png"
 import LinearColor from './loader';
 import getToken from './useToken';
-import { Link } from 'react-router-dom';
-import { AiFillDelete } from 'react-icons/ai';
 import { Typography } from "@mui/material";
 
 
@@ -14,7 +12,7 @@ const UserListings = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${apiUrl}/mylistings`, {
+        const res = await fetch(`${apiUrl}/favorites`, {
             method: "POST",
             mode: 'cors',
             headers: {
@@ -22,7 +20,6 @@ const UserListings = () => {
             }});
         const jsonData = await res.json();
         setData(jsonData);
-        console.log(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }};
@@ -30,8 +27,9 @@ const UserListings = () => {
   }, []);
 
   const ProductItems = () => {
-    if (!data.length) {
-      return (<LinearColor/>);
+    if (!data) {
+      // Return a loading indicator while waiting for data
+      return (<LinearColor />);
     }
     if (data) {
         try {
@@ -43,9 +41,6 @@ const UserListings = () => {
                 <img src={item.image} className="productImg" alt="Product-alt" />
                 <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
                 </a>
-                <Link to={`/delete/${item.id}`} style={{ textDecoration: "none", color: "white" }}>
-                <AiFillDelete className="deleteIcon" />
-            </Link>
                 </div>
                 <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
                 <div className="productName">{item.item_name}</div>
@@ -61,7 +56,7 @@ const UserListings = () => {
         )}
         catch(e) {
             return (
-                <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You're Not Logged In</Typography>
+                <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You Don't have Any Favorites</Typography>
             )
         }}
   };
@@ -73,13 +68,14 @@ const UserListings = () => {
   });
 
     return (
-        <>        
+        <>
         {data.length && (
-          <div>
-            <Typography variant="h4" sx={{ color: "white", textAlign: "center",mb: "50px", mt: "50px" }}>My Listings</Typography>
-          </div>
-        )}
+            <div>
+              <Typography variant="h4" sx={{ color: "white", textAlign: "center",mb: "50px", mt: "50px" }}>Favorites</Typography>
+            </div>
+          )}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+
         <ProductItems />
         </div>
         </>

@@ -27,3 +27,11 @@ CREATE TABLE CatagoryTable (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     Name CHARACTER(100)
 );
+
+drop table if exists FavoriteTable;
+CREATE TABLE FavoriteTable (
+    UserID INTEGER,
+    ItemID INTEGER,
+    FOREIGN KEY (UserID) REFERENCES UserTable(ID),
+    FOREIGN KEY (ItemID) REFERENCES ItemsTable(ID)
+);

@@ -14,5 +14,3 @@ export const GET = {
     method: 'GET',
     mode: 'cors',
   }
-
-

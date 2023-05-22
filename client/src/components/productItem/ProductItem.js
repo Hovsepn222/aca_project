@@ -32,6 +32,7 @@ export const ProductItem = () => {
       {data.map((item) => {
         return (
       <ItemCard 
+      key={item.id}
       id={item.id}
       userId={item.user_id}
       categoryId={item.category_id}

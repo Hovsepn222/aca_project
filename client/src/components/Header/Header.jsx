@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 import SideNavigation from "../sidenav";
-import { GoSearch } from "react-icons/go";
+import { ImSearch } from "react-icons/im";
 import { FaUserCircle } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { MdLanguage } from "react-icons/md";
@@ -61,6 +61,11 @@ export default function Header() {
     handleMenuClose();
   };
 
+  const handleFavorites = () => {
+    navigate("/favorites");
+    handleMenuClose();
+  }
+
   return (
     <header className="header">
       <div className="sidenav-div">
@@ -80,7 +85,7 @@ export default function Header() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button className="searchBar-btn" onClick={handleSearch}>
-          {<GoSearch className="search-btn" />}
+          {<ImSearch color="white" className="search-btn" />}
         </button>
       </div>
       <div className="add-div">
@@ -96,6 +101,7 @@ export default function Header() {
           <MenuItem onClick={handleMyListings}>My Listings</MenuItem>
           <MenuItem onClick={handleLogin}>Login</MenuItem>
           <MenuItem onClick={handleSignup}>SignUp</MenuItem>
+          <MenuItem onClick={handleFavorites}>Favorites</MenuItem>
         </Menu>
       </div>
     </header>

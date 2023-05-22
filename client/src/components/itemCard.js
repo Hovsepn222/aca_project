@@ -1,25 +1,47 @@
-import React from "react";
-import favorite from "./productItem/images/Favorite.png"
+import React, {useState} from "react";
+import Button from '@mui/material/Button';
+import { GrFavorite } from 'react-icons/gr';
+import { apiUrl } from '../apiConfig';
+import getToken from './useToken';
 
 const ItemCard = (props) => {
     const { id, userId, categoryId, itemName, description, price, currency, location, image } = props;
 
-    return (<div className="productCard" key={id}>
+    const handleClick = async (id) => {
+        try {
+          const res = await fetch(`${apiUrl}/addfavorite/${id}`, {
+              method: "POST",
+              mode: 'cors',
+              headers: {
+                Authorization: 'Bearer ' + getToken()
+              }});
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        };
+    }
+
+    return (
+    <div className="productCard" key={id}>
     <div className="topGroup">
     <a href={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
       <img src={image} className="productImg" alt="Product-alt" />
-      <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
       </a>
     </div>
     <a href={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
     <div className="productName">{itemName}</div>
     <div className="productDescription">{description}</div>
-    <div className="productName">{location}</div>
+    <div className="productName">{location}</div></a>
     <div className="bottomGroup">
-     <div className="productPrice">{price}</div>
-       <div >{currency}</div>
+    <div className="productPrice">{price}</div>
+    <div >{currency}</div>
     </div>
-    </a>
-    </div>)
+    <Button
+    style={{ textDecoration: "none", color: "white" }}
+    onClick={() => handleClick(id)}
+    >
+    <GrFavorite className="deleteIcon" />
+    </Button>
+    </div>
+  )
 }
 export default ItemCard;

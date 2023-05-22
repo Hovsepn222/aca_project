@@ -15,6 +15,7 @@ import DeleteListing from './components/deleteListing';
 import { Login } from './components/Login/Login';
 import { SignUp } from './components/SignUp/SignUp';
 import Logout from './components/logout'
+import FavoriteItems from './components/favoriteItems'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
             <Route path='/delete/:id' element={<DeleteListing/>}/>
             <Route path="/search/:searchKeyword" element={<SearchedItems/>}/>
             <Route path='/logout' element={<Logout/>}/>
+            <Route path='/favorites' element={<FavoriteItems/>}/>
             <Route path='*' element={<NotFound />}/>
         </Route>
     )
