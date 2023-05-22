@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from 'react-material-ui-carousel'
-import { Typography, Button, Card, CardContent } from "@mui/material";
+import { Typography, Button, Card, CardContent, BottomNavigation } from "@mui/material";
 import styled from "styled-components";
 
 const CarouselBanner = styled.div`
@@ -23,6 +23,7 @@ const CardContainer = styled.div`
 `;
 
 const CarouselComponent = () => {
+
   var items = [
     {
       catagory: "Cars For Sale Category",
@@ -32,7 +33,7 @@ const CarouselComponent = () => {
       alt2: "carousel-image-cars-2",
       image3: "https://s.list.am/g/619/65369619.webp",
       alt3: "carousel-image-cars-3",
-      link: "/catagories/cars"
+      link: "/category/1"
     },
     {
       catagory: "Electronics Catagory",
@@ -42,7 +43,7 @@ const CarouselComponent = () => {
       alt2: "carousel-image-elect-2",
       image3: "https://s.list.am/g/225/63017225.webp",
       alt3: "carousel-image-elect-3",
-      link: "/catagories/electronics"
+      link: "/category/2"
     },
     {
         catagory: "Real State Catagory",
@@ -52,7 +53,7 @@ const CarouselComponent = () => {
         alt2: "carousel-image-realstate-2",
         image3: "https://s.list.am/g/408/67357408.webp",
         alt3: "carousel-image-realstate-3",
-        link: "/catagories/realstate"
+        link: "/category/3"
     },
     {
         catagory: "Home & Accessories Catagory",
@@ -62,7 +63,7 @@ const CarouselComponent = () => {
         alt2: "carousel-image-Home-2",
         image3: "https://s.list.am/g/317/67218317.webp",
         alt3: "carousel-image-Home-3",
-        link: "/catagories/homeaccessories"
+        link: "/category/4"
     },
 
   ];
@@ -88,6 +89,7 @@ const CarouselComponent = () => {
 }
 
 function Item(props) {
+  
   return (
     <div style={{ display: "flex" }}>
         <CardContainer>

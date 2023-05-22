@@ -9,7 +9,7 @@ export default function App() {
     <div >
       <Header />
       <CarouselComponent />
-      <Typography variant="body1" sx={{ color: "#86c232"}}>Recently Added</Typography>
+      <Typography variant="h2" sx={{ color: "#86c232", textAlign: "center", mb: "50px", mt: "50px" }}>Recently Added</Typography>
       <ProductItem />
     </div>
   )

@@ -9,6 +9,7 @@ const FooterContainer = styled.footer`
   justify-content: center;
   align-items: center;
   height: 150px;
+  margin-top: 50px;
 `;
 
 const FooterContainer2 = styled.footer`

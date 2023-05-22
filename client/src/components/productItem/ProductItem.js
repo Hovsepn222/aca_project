@@ -29,7 +29,6 @@ export const ProductItem = () => {
     
     return (
       <>
-      
       {data.map((item) => {
         return (
       <ItemCard 
