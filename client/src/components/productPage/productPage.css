@@ -1,0 +1,581 @@
+.container{
+    background-color: #474B4F;
+}
+
+#mainoverlay {
+    position: absolute;
+    z-index: 2;
+    display: none;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background-color: #000;
+}
+
+td, tr, p, ul, ol, li, input, select, span {
+    font-family: 'Noto Sans Armenian','Open Sans','lucida grande',tahoma,arial,sans-serif;
+    font-size: 15px;
+    margin-left: 0;
+}
+
+div {
+    display: block;
+}
+
+body {
+    font-family: 'Noto Sans Armenian','Open Sans','lucida grande',tahoma,arial,sans-serif;
+    font-size: 12px;
+    color: #000000;
+    line-height: 1.5;
+    width: 100%;
+    margin: 0;
+    padding: 60px 0 80px 0;
+    background-color: #f6f6f6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+.main{
+    position: relative;
+    clear: both;
+    width: 1140px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0;
+}
+
+.category{
+    display: flex;
+    align-items: center;
+    height: 46px;
+}
+
+.categoryList{
+    font-size: 12px;
+    color: #666;
+    line-height: 46px;
+    display: inline;
+}
+
+.star{
+    z-index: 8;
+    top: 14px;
+    right: 4px;
+    left: auto;
+    width: 24px;
+    height: 24px;
+    display: none;
+    cursor: pointer;
+    background-position-y: -40px;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    left: -31px;
+    top: 64px;
+    left: -50px;
+}
+
+.on{
+    background-position-y: -40px;
+    transition: transform .1s;
+    /* background: url(/img/p.png) -54px -51px; */
+    background-size: 120px 120px;
+}
+
+.links{
+    position: absolute;
+    width: 34px;
+    margin: 120px 0 0 -50px;
+}
+
+.link2{
+    
+    background-position: -32px 0;
+}
+
+.link3{
+    
+    background-position: -64px 0;
+}
+
+.link4{
+    
+    background-position: -96px 0;
+}
+
+.share{
+    font-size: 17px;
+    color: #999;
+    line-height: 25px;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin: 0 3px;
+    text-align: center;
+    border-radius: 4px;
+    /* background-image: url(/img/psp.png); */
+    background-size: 200px 108px;
+    -webkit-transition: -webkit-filter 200ms linear;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pmain{
+    display: flex;
+    box-sizing: border-box;
+    width: 1140px;
+}
+
+
+.pcontent {
+    position: relative;
+    width: 740px;
+    padding: 0;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
+}
+
+.photo {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.p{
+    width: 5120px;
+    left: 0px;
+}
+
+.photo .p {
+    position: relative;
+    display: flex;
+    float: left;
+    overflow: hidden;
+    flex-direction: row;
+    width: 740px;
+    height: 540px;
+    padding: 0;
+    white-space: nowrap;
+    transition: left 200ms;
+}
+
+.photo>.p>div {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.p1{
+    width: 640px;
+    height: 480px;
+    display: flex
+}
+
+.p2{
+    width: 640px;
+    height: 480px;
+    display: flex;
+}
+
+.photo>.p>div img {
+    width: 740px;
+    height: 540px;
+    object-fit: cover;
+}
+
+.photo .jump {
+    position: absolute;
+    bottom: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+
+.jump span.selected {
+    opacity: 1;
+    border: 1px solid #222;
+    background-color: #eee;
+}
+
+.photo .jump span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 3px;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: #222;
+}
+
+.photo .jump {
+    position: absolute;
+    bottom: 10px;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.arr1{
+    opacity: 0;
+}
+.arr2{
+    left: auto;
+    right: 0px;
+    text-align: right;
+    opacity: 0;
+}
+
+.photo .arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 34px;
+    height: 540px;
+    cursor: pointer;
+    text-align: left;
+    opacity: 0;
+}
+
+.photo .arrow .left {
+    position: absolute;
+    align-self: center;
+    width: 32px;
+    height: 51px;
+    margin-left: 4px;
+    cursor: pointer;
+    /* background: url(/img/psp.png) no-repeat -0 -24px; */
+    background-size: 200px 108px;
+    transition: transform .2s;
+}
+
+.photo .arrow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 34px;
+    height: 540px;
+    cursor: pointer;
+    text-align: left;
+    opacity: 0;
+}
+
+.photo .arrow .right {
+    position: absolute;
+    align-self: center;
+    width: 32px;
+    height: 51px;
+    margin-right: 4px;
+    cursor: pointer;
+    /* background: url(/img/psp.png) no-repeat -32px -24px; */
+    background-size: 200px 108px;
+    transition: transform 0.2s;
+}
+
+.z1{
+    opacity: 0
+}
+
+.photo .zoom {
+    position: absolute;
+    z-index: 4;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: transform .2s;
+}
+
+.photo .zoom div {
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 4px auto;
+    cursor: pointer;
+    /* background: url(/img/psp.png) no-repeat -63px -24px; */
+    background-size: 200px 108px;
+}
+
+
+
+.info {
+    margin: 12px 20px 0 20px;
+}
+
+.info h1 {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+    display: block;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.pbar{
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    margin: 6px 0;
+}
+
+.location{
+    display: inline;
+    overflow: hidden;
+    margin: 4px 0 12px;
+    padding-left: 16px;
+    text-overflow: ellipsis;
+    /* background: url(/img/psp.png) no-repeat -176px 4px; */
+    background-size: 200px 108px;
+}
+
+.price{
+    margin: 6px 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.content .gt, .body .t {
+    font-size: 18px;
+    font-weight: 800;
+    color: #333;
+    margin: 20px 20px 4px 20px;
+}
+
+.content .attr.g .c {
+    border: none;
+    padding: 4px 0;
+}
+
+.content .attr .c {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 7px 0;
+    border-bottom: 1px dotted #e2e2e2;
+    font-size: 15px;
+}
+
+.content .attr .c .t {
+    flex: 1;
+    margin-right: 20px;
+    color: #444;
+}
+
+.content .attr.g .c .t {
+    flex: 0;
+    min-width: 180px;
+    max-width: 180px;
+    color: #666;
+    text-align: right;
+}
+
+.content .attr.g .c .i {
+    font-weight: normal;
+    color: #000;
+    text-align: left;
+}
+
+.content .attr .c .i {
+    text-align: right;
+    font-weight: 800;
+    color: #222;
+}
+
+.content .body {
+    font-size: 16px;
+    color: #393939;
+    line-height: 1.6;
+    margin: 6px 20px 10px;
+    word-wrap: break-word;
+}
+
+
+.pmenu {
+    width: 380px;
+    height: 100%;
+    margin-left: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
+}
+
+#uinfo {
+    padding: 20px 12px;
+    text-align: center;
+    border-bottom: 1px solid #f2f2f2;
+    border-radius: 8px 8px 0 0;
+    background-color: #fff;
+}
+
+#uinfo>div:first-child>.n {
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+#uinfo .r, .uinfo .r {
+    margin-top: 10px;
+}
+
+a, a:visited {
+    color: #222;
+    text-decoration: none;
+    transition: color .2s,background-color .2s;
+}
+
+#uinfo .ctc {
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#uinfo .email {
+    font-size: 14px;
+}
+
+#uinfo .email a {
+    color: #fff;
+    display: inline-block;
+    min-width: 180px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #0c72ea;
+}
+
+#uinfo .phone {
+    font-size: 14px;
+    margin: 10px 0 0 0;
+}
+
+#uinfo .phone a {
+    color: #fff;
+    display: inline-block;
+    min-width: 180px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #2bb842;
+}
+
+.pmenu .pblock {
+    margin: 6px auto;
+    padding: 16px 0;
+    text-align: center;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+    border-radius: 0;
+    background-color: #fff;
+}
+
+.pmenu .pblock a, .padded .srv .i a {
+    font-size: 12px;
+    display: inline-block;
+    width: 80px;
+    text-align: center;
+    transition: color .2s;
+}
+
+a, a:visited {
+    color: #222;
+    text-decoration: none;
+    transition: color .2s,background-color .2s;
+}
+
+.pmenu .pblock a.top div, .dl .pbl a.top div {
+    background-position: 0 -76px;
+}
+
+.pmenu .pblock a div, #pmenu .pblock .g div {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    padding-bottom: 2px;
+    /* background: url(/img/psp.png) no-repeat; */
+    background-size: 200px 108px;
+}
+
+.pmenu .pblock a.home div, .dl .pbl a.home div {
+    background-position: -32px -76px;
+}
+
+/* .pmenu .pblock a div, #pmenu .pblock .g div {
+    width: 32px;
+    height: 32px;
+    margin: auto;
+    padding-bottom: 2px;
+    background: url(./icons/instagram.png) no-repeat;
+    background-size: 200px 108px;
+} */
+
+.pmenu .pblock a.ushop div, .dl .pbl a.ushop div {
+    background-position: -64px -76px;
+}
+
+.other {
+    margin: 6px 0 0 0;
+    padding: 10px;
+    border-top: 1px solid #f2f2f2;
+    border-radius: 0 0 8px 8px;
+    background-color: #fff;
+}
+
+.trel {
+    font-size: 14px;
+    font-weight: bold;
+    color: #393939;
+    display: block;
+    padding: 0 0 6px 2px;
+    text-align: left;
+}
+
+.otherInfo{
+    display: flex;
+    padding: 10px 0 10px 2px;
+}
+
+.np{
+    font-size: 14px;
+    color: #333;
+    display: -webkit-box;
+    overflow: hidden;
+    flex: 1;
+    min-height: 30px;
+    max-height: 68px;
+    text-align: left;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    max-height: 84px !important;
+    -webkit-line-clamp: 4 !important;
+}
+
+.otherp{
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+    margin-top: 4px;
+}
+
+.otehrPh{
+    width: 140px;
+    height: 105px;
+    margin-right: 10px;
+    border-radius: 8px;
+    object-fit: cover;
+}
