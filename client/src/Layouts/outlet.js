@@ -9,7 +9,7 @@ export default function NavBarLayout() {
     return (
         <div>
             <Header />
-            <Outlet/>
+            <Outlet />
         </div>
     )
 

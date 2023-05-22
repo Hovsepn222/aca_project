@@ -30,19 +30,24 @@ def signup_create_account():
     name = request.json.get("name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None) + salt
+    confirmPassword = request.json.get("confirmPassword", None) + salt
     hashed_password = hashlib.md5(password.encode()).hexdigest()
     phone_number = request.json.get("phone_number", None)
     conn = get_db_connection()
     if conn.execute("select * from UserTable where Email = ?", [email]).fetchone():
-        return {"msg": "Email is already added"}, 409
+        return {"error": "Email is already added"}, 409
     if conn.execute("select * from UserTable where PhoneNumber = ?", [phone_number]).fetchone():
-        return {"msg": "An account with this phone number exists"}, 409
+        return {"error": "An account with this phone number exists"}, 409
     conn.execute("INSERT INTO UserTable (Name, Email, Password, PhoneNumber) VALUES (?,?,?,?)",
             (name, email, hashed_password, phone_number)
             )
+    if password != confirmPassword:
+        return {"error": "Passwords didn't Match"}, 409
     conn.commit()
     conn.close()
-    return {"msg": "Account has been created"}, 201
+    access_token = create_access_token(identity=email)
+    response = {"access_token":access_token}
+    return response
 
 # Login 
 @app.route('/api/login', methods=["POST"])
@@ -151,26 +156,33 @@ def item_page(item_id):
         }]
     return jsonify(item)
 
-
 # User Listings
-@app.route('/api/mylistings/<user_id>', methods=["GET", "POST"])
+@app.route('/api/mylistings', methods=["GET", "POST"])
 @cross_origin()
-# @jwt_required()
-def user_listings(user_id):
+@jwt_required()
+def user_listings():
     conn = get_db_connection()
-    items = conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user_id]).fetchall()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
     res = []
-    for row in items:
-        res.append({
-            "user_id": row['UserID'],
-            "category_id": row['CatagoryID'],
-            "item_name": row['ItemName'],
-            "description": row['Description'],
-            "price": row["Price"],
-            "currency": row['Currency'],
-            "location": row['Location'] 
-        })
-    return jsonify(res)
+    # print(current_user)
+    if conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user['ID']]).fetchall():
+        items = conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user['ID']]).fetchall()
+        for row in items:
+            res.append({
+                "id": row['ID'],
+                "user_id": row['UserID'],
+                "category_id": row['CatagoryID'],
+                "item_name": row['ItemName'],
+                "description": row['Description'],
+                "price": row["Price"],
+                "currency": row['Currency'],
+                "location": row['Location'],
+                "image": row['Image']
+            })
+        return jsonify(res)
+    return jsonify({"message": 'No Items listed'})
+    
 
 # Search Items
 @app.route('/api/search/<search_keyword>', methods=["POST", "GET"])
@@ -193,25 +205,27 @@ def search_listings(search_keyword):
     return jsonify(res)
 
 # Delete Items
-@app.route('/api/delete/<item_id>', methods=["DELETE"])
+@app.route('/api/delete/<item_id>', methods=["POST"])
 @cross_origin()
-# @jwt_required()
+@jwt_required()
 def delete_listing(item_id):
-    user_id = request.json.get("user_id", None)
     conn = get_db_connection()
-    item = conn.execute("SELECT * FROM ItemsTable WHERE ID = ?", [item_id]).fetchone()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
+    print(user['ID'])
+    item = conn.execute("SELECT * FROM ItemsTable WHERE ID = ? AND UserID = ?", [item_id, user['ID']]).fetchone()
     if item is None:
             return jsonify({"message": "Item not found"}), 404
-    if item['UserID'] != user_id:
+    if item['UserID'] != user['ID']:
         return jsonify({"message": "User ID doesn't match with the Item UserID"}), 403
-    conn.execute("DELETE FROM ItemsTable WHERE ID = ?", [item_id])
+    conn.execute("DELETE FROM ItemsTable WHERE ID = ? AND UserID = ?", [item_id, user['ID']])
     conn.commit()
-    return jsonify({"message": "Item deleted successfully"})
+    return jsonify({"message": "Item deleted successfully"}), 200
 
 # Add Item
 @app.route('/api/add', methods=["POST", "GET"])
 @cross_origin()
-# @jwt_required()
+@jwt_required()
 def add_item():
     data = request.get_json()
     user_id = data.get('user_id')

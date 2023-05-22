@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import {MdOutlineAddToPhotos} from "react-icons/md"
 import {CgProfile} from "react-icons/cg"
+import getToken, {setToken, removeToken} from '../useToken'
 
 const NavbarHome = styled.div`
   display: flex;
