@@ -28,7 +28,6 @@ export function SignUp(props) {
     
       try {
         const response = await axios.post(`${apiUrl}/signup`, formData);
-        console.log(response.data); // Handle the response from the backend
         localStorage.setItem('token', response.data["access_token"]);
         dispatch(login())
         navigate('/mylistings');

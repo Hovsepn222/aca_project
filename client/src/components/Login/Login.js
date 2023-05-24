@@ -26,7 +26,6 @@ export function Login(props) {
         // console.log(response.data); // Handle the response from the backend
         setToken(response.data["access_token"]);
         dispatch(login());
-        console.log(getToken())
         navigate('/mylistings');
       } catch (err) {
         setError(err.response.data['error'])
@@ -35,7 +34,7 @@ export function Login(props) {
     };
 
     return (
-        <body>
+        <>
             <div className="container">
                 <section id="content">
                     <form onSubmit={handleSubmit}>
@@ -68,6 +67,6 @@ export function Login(props) {
                     </form>
                 </section>
             </div>
-        </body>
+        </>
     )
 }

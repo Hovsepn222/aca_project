@@ -27,7 +27,6 @@ export function ProductPage() {
             const res = await fetch(`${apiUrl}/similar/${id}`, POST);
             const jsonData = await res.json();
             setSimilarItems(jsonData);
-            console.log(similarItems);
           } catch (error) {
             console.error("Error fetching data:", error);
           }};

@@ -1,8 +1,6 @@
 import store from '../redux/store'
 import getToken, {removeToken} from './useToken';
 import { apiUrl } from '../apiConfig';
-import React, { useState } from "react";
-import { Navigate } from 'react-router-dom';
 
 
 export const UserLoggedStatus = () => {

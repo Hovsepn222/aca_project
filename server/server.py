@@ -89,6 +89,32 @@ def get_user_data():
     }
     return jsonify(data)
 
+# Change User Data
+@app.route("/api/changeloggeddata", methods=[ "POST"])
+@cross_origin()
+@jwt_required()
+def change_user_data():
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
+    try:
+        email = request.json.get("email", None)
+        name = request.json.get("name", None)
+        phone_number = request.json.get("phone_number", None)
+        if email and name and phone_number:
+            conn.execute("""
+                UPDATE UserTable
+                SET Name = ?,
+                    Email = ?,
+                    PhoneNumber = ?
+                WHERE ID = ?
+            """, (name, email, phone_number, user['ID']))
+            conn.commit()
+            conn.close()
+            return jsonify({"Success": 'Data Updated'})
+    except:
+        return jsonify({"Error": 'Payload error'})
+
 
 # All Items
 @app.route("/api", methods=["POST", "GET"])
@@ -144,6 +170,7 @@ def catagory_pages(category_id):
     res = []
     for row in items:
         res.append({
+            "id": row['ID'],
             "user_id": row['UserID'],
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],
@@ -211,7 +238,6 @@ def user_listings():
     current_user = get_jwt_identity()
     user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
     res = []
-    # print(current_user)
     if conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user['ID']]).fetchall():
         items = conn.execute("SELECT * FROM ItemsTable WHERE UserID = ?", [user['ID']]).fetchall()
         for row in items:
@@ -239,6 +265,7 @@ def search_listings(search_keyword):
     res = []
     for row in items:
         res.append({
+            "id": row['ID'],
             "user_id": row['UserID'],
             "category_id": row['CatagoryID'],
             "item_name": row['ItemName'],

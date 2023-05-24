@@ -9,6 +9,7 @@ import { Typography } from "@mui/material";
 import { UserLoggedStatus } from './loggedInStatus';
 
 
+
 const UserListings = () => {
   const [data, setData] = useState([]);
 
@@ -55,15 +56,15 @@ const UserListings = () => {
             return (
             <div className="productCard" key={item.id}>
                 <div className="topGroup">
-                <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+                <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
                 <img src={item.image} className="productImg" alt="Product-alt" />
                 <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-                </a>
+                </Link>
                 <Link to={`/delete/${item.id}`} style={{ textDecoration: "none", color: "white" }}>
                 <AiFillDelete className="deleteIcon" />
             </Link>
                 </div>
-                <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+                <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
                 <div className="productName">{item.item_name}</div>
                 <div className="productDescription">{item.description}</div>
                 <div className="productName">{item.location}</div>
@@ -71,7 +72,7 @@ const UserListings = () => {
                 <div className="productPrice">{item.price}</div>
                 <div >{item.currency}</div>
             </div>
-            </a>
+            </Link>
             </div>
             )}
         )}

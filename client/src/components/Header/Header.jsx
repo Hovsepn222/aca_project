@@ -62,8 +62,8 @@ export default function Header() {
       const userData = await GetLoggedUserData();
       setUserData(userData)
     }
-    GetUserData()
-  }, []);
+    GetUserData();
+  }, [anchorEl]);
 
   const navigateToHome = () => {
     navigate("/");
@@ -169,7 +169,7 @@ export default function Header() {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={handleProfileClick} disableRipple='true'><ListItemIcon>
+          <MenuItem onClick={handleProfileClick}><ListItemIcon>
             <AccountCircleIcon fontSize="small"/>
           </ListItemIcon>{userData['name']}</MenuItem>
           

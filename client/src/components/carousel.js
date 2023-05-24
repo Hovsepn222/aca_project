@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from 'react-material-ui-carousel'
 import { Typography, Button, Card, CardContent, BottomNavigation } from "@mui/material";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CarouselBanner = styled.div`
   align-items: center;
@@ -89,6 +90,10 @@ const CarouselComponent = () => {
 }
 
 function Item(props) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(props.item.link)
+  }
   
   return (
     <div style={{ display: "flex" }}>
@@ -99,7 +104,7 @@ function Item(props) {
               {props.item.catagory}
             </Typography>
             <br/>
-            <Button size="large" sx={{ color: "#222629" ,border: "black"}}>
+            <Button onClick={handleClick} size="large" sx={{ color: "#222629" ,border: "black"}}>
               Browse
             </Button>
           </CardContent>

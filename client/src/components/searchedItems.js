@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { apiUrl, POST } from '../apiConfig';
 import { useEffect, useState } from 'react';
 import favorite from "./productItem/images/Favorite.png";
@@ -29,12 +29,12 @@ const SearchedItems = () => {
       return (
       <div className="productCard" key={item.id}>
         <div className="topGroup">
-        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+        <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
           <img src={item.image} className="productImg" alt="Product-alt" />
           <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-          </a>
+          </Link>
         </div>
-        <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+        <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
         <div className="productName">{item.item_name}</div>
         <div className="productDescription">{item.description}</div>
         <div className="productName">{item.location}</div>
@@ -42,7 +42,7 @@ const SearchedItems = () => {
          <div className="productPrice">{item.price}</div>
            <div >{item.currency}</div>
        </div>
-       </a>
+       </Link>
        
      </div>
      

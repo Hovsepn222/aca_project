@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { GrFavorite } from 'react-icons/gr';
 import { apiUrl } from '../apiConfig';
 import getToken from './useToken';
+import { Link } from "react-router-dom";
 
 const ItemCard = (props) => {
     const { id, userId, categoryId, itemName, description, price, currency, location, image } = props;
@@ -23,14 +24,14 @@ const ItemCard = (props) => {
     return (
     <div className="productCard" key={id}>
     <div className="topGroup">
-    <a href={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
+    <Link to={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
       <img src={image} className="productImg" alt="Product-alt" />
-      </a>
+      </Link>
     </div>
-    <a href={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
+    <Link to={`/item/${id}`} style={{textDecoration: "none", color: "white"}}>
     <div className="productName">{itemName}</div>
     <div className="productDescription">{description}</div>
-    <div className="productName">{location}</div></a>
+    <div className="productName">{location}</div></Link>
     <div className="bottomGroup">
     <div className="productPrice">{price}</div>
     <div >{currency}</div>
