@@ -4,6 +4,7 @@ import favorite from "./productItem/images/Favorite.png"
 import LinearColor from './loader';
 import getToken from './useToken';
 import { Typography } from "@mui/material";
+import { UserLoggedStatus } from './loggedInStatus';
 
 
 const UserListings = () => {
@@ -27,10 +28,25 @@ const UserListings = () => {
   }, []);
 
   const ProductItems = () => {
-    if (!data) {
-      // Return a loading indicator while waiting for data
-      return (<LinearColor />);
-    }
+    if (!UserLoggedStatus()) {
+      return (
+          <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You're Not Logged In</Typography>
+      )}
+      if (data.length === 0) {
+        return (<Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>
+        Checking...
+        <LinearColor />
+      </Typography>);
+      }
+      if (data["message"]) {
+        if (data["message"] === "No Items listed") {
+          return (
+            <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>
+              You Don't Have Any Favorites.
+            </Typography>
+          );
+        }
+      }
     if (data) {
         try {
             return data.map((item) => {
@@ -69,7 +85,7 @@ const UserListings = () => {
 
     return (
         <>
-        {data.length && (
+        {data.length >= 1 && (
             <div>
               <Typography variant="h4" sx={{ color: "white", textAlign: "center",mb: "50px", mt: "50px" }}>Favorites</Typography>
             </div>

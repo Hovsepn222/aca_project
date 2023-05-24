@@ -4,6 +4,8 @@ import { apiUrl } from '../../apiConfig';
 import "./Login.css"
 import getToken, {setToken, removeToken} from '../useToken'
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../redux/logInStatus';
+import {useDispatch, useSelector} from "react-redux";
 
 
 export function Login(props) {
@@ -11,7 +13,7 @@ export function Login(props) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    
+    const dispatch = useDispatch();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -23,9 +25,9 @@ export function Login(props) {
         const response = await axios.post(`${apiUrl}/login`, formData);
         // console.log(response.data); // Handle the response from the backend
         setToken(response.data["access_token"]);
+        dispatch(login());
         console.log(getToken())
         navigate('/mylistings');
-
       } catch (err) {
         setError(err.response.data['error'])
         removeToken()

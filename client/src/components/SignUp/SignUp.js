@@ -3,6 +3,8 @@ import "./SignUp.css"
 import { apiUrl } from '../../apiConfig';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../redux/logInStatus';
+import {useDispatch, useSelector} from "react-redux";
 
 export function SignUp(props) {
     const [name, setName] = useState('');
@@ -12,6 +14,7 @@ export function SignUp(props) {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -22,11 +25,12 @@ export function SignUp(props) {
         "confirmPassword":confirmPassword,
         "phone_number": phoneNumber
     }
-  
+    
       try {
         const response = await axios.post(`${apiUrl}/signup`, formData);
         console.log(response.data); // Handle the response from the backend
         localStorage.setItem('token', response.data["access_token"]);
+        dispatch(login())
         navigate('/mylistings');
       } catch (err) {
         setError(err.response.data['error']);

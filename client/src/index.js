@@ -14,8 +14,10 @@ import UserListings from './components/userListings';
 import DeleteListing from './components/deleteListing';
 import { Login } from './components/Login/Login';
 import { SignUp } from './components/SignUp/SignUp';
-import Logout from './components/logout'
-import FavoriteItems from './components/favoriteItems'
+import Logout from './components/logout';
+import FavoriteItems from './components/favoriteItems';
+import { ProductPage } from './components/productPage/ProductPage';
+import ProfileView from './components/ProfileView';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -23,6 +25,8 @@ const router = createBrowserRouter(
             <Route index element={<App />}/>
             <Route path="/category/:id" element={<Category/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/item/:id' element={<ProductPage/>}/>
+            <Route path='/profile' element={<ProfileView/>}/>
             <Route path='/signup' element={<SignUp/>}/>
             <Route path='/mylistings' element={<UserListings/>}/>
             <Route path='/delete/:id' element={<DeleteListing/>}/>
@@ -38,10 +42,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
             <Provider store={store}>
                 <RouterProvider router={router}/>
-                
-                {/* Write Component Code Here */}
-
-
                 <Footer />
             </Provider>
 );

@@ -1,8 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
-import navBarSlice from './navbar'
+import logInSlice from './logInStatus'
 
 export default configureStore({
     reducer: {
-        user: navBarSlice
+        user: logInSlice
     }
 })

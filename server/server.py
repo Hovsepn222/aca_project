@@ -64,7 +64,6 @@ def login_create_token():
         return {"msg": "Wrong email or password"}, 401
     access_token = create_access_token(identity=email)
     response = {"access_token":access_token}
-    print(user['Email'])
     return response
 
 # Logout
@@ -74,6 +73,22 @@ def logout():
     response = jsonify({"msg": "logout successful"})
     unset_jwt_cookies(response)
     return response
+
+# Logged User Data
+@app.route("/api/loggeddata", methods=["POST"])
+@cross_origin()
+@jwt_required()
+def get_user_data():
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
+    data = {
+        "email": user['Email'],
+        "name": user['Name'],
+        "phone_number": user['PhoneNumber']
+    }
+    return jsonify(data)
+
 
 # All Items
 @app.route("/api", methods=["POST", "GET"])
@@ -146,7 +161,8 @@ def catagory_pages(category_id):
 def item_page(item_id):
     conn = get_db_connection()
     item = conn.execute('SELECT * FROM ItemsTable WHERE ID = ?', [item_id]).fetchone()
-    item = [{
+    user = conn.execute('SELECT * FROM UserTable WHERE ID = ?', [item['UserID']]).fetchone()
+    data = {
             "id": item['ID'],
             "user_id": item['UserID'],
             "category_id": item['CatagoryID'],
@@ -154,9 +170,37 @@ def item_page(item_id):
             "description": item['Description'],
             "price": item["Price"],
             "currency": item['Currency'],
-            "location": item['Location'] 
-        }]
-    return jsonify(item)
+            "location": item['Location'],
+            "image": item['Image'],
+            "user_name": user['Name'],
+            "user_email": user['Email'],
+            "user_number": user['PhoneNumber']
+        }
+    return jsonify(data)
+
+# Similar Items
+@app.route("/api/similar/<item_id>", methods=["GET", "POST"])
+@cross_origin()
+def similar_items(item_id):
+    conn = get_db_connection()
+    item = conn.execute('SELECT * FROM ItemsTable WHERE ID = ?', [item_id]).fetchone()
+    similar_items = conn.execute('SELECT * FROM ItemsTable WHERE CatagoryID = ? LIMIT 4', [item['CatagoryID']]).fetchall()
+    data = []
+    for item in similar_items:
+        data.append({
+                "id": item['ID'],
+                "user_id": item['UserID'],
+                "category_id": item['CatagoryID'],
+                "item_name": item['ItemName'],
+                "description": item['Description'],
+                "price": item["Price"],
+                "currency": item['Currency'],
+                "location": item['Location'],
+                "image": item['Image']
+            })
+    return jsonify(data)
+
+
 
 # User Listings
 @app.route('/api/mylistings', methods=["GET", "POST"])

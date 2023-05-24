@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import favorite from "./productItem/images/Favorite.png"
 import LinearColor from './loader';
 import getToken from './useToken';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { AiFillDelete } from 'react-icons/ai';
 import { Typography } from "@mui/material";
+import { UserLoggedStatus } from './loggedInStatus';
 
 
 const UserListings = () => {
@@ -22,7 +23,6 @@ const UserListings = () => {
             }});
         const jsonData = await res.json();
         setData(jsonData);
-        console.log(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }};
@@ -30,8 +30,24 @@ const UserListings = () => {
   }, []);
 
   const ProductItems = () => {
-    if (!data.length) {
-      return (<LinearColor/>);
+    if (!UserLoggedStatus()) {
+      return (
+          <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You're Not Logged In</Typography>
+      )}
+    if (data.length === 0) {
+      return (<Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>
+      Checking...
+      <LinearColor />
+    </Typography>);
+    }
+    if (data["message"]) {
+      if (data["message"] === "No Items listed") {
+        return (
+          <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>
+            You don't have anything listed.
+          </Typography>
+        );
+      }
     }
     if (data) {
         try {
@@ -60,10 +76,8 @@ const UserListings = () => {
             )}
         )}
         catch(e) {
-            return (
-                <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You're Not Logged In</Typography>
-            )
-        }}
+          Navigate('/login')
+        }} 
   };
 
   useEffect(() => {
@@ -71,7 +85,6 @@ const UserListings = () => {
       ProductItems();
     }
   });
-
     return (
         <>        
         {data.length && (
