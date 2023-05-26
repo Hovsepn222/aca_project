@@ -100,17 +100,25 @@ const AddItem = () => {
   };
 
   const handleItemImageChange = (e) => {
-    // Handle image upload and save the image locally
-    const file = e.target.files[0];
-    setItemImage(file);
+    const image = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onload = (event) => {
+      const imageDataUrl = event.target.result;
+      setItemImage(imageDataUrl);
+    };
+  
+    reader.readAsDataURL(image);
   };
+  
 
   const handleItemDescriptionChange = (e) => {
     setItemDescription(e.target.value);
   };
 
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+    console.log(e.target.value);
+    setCategory(e.target.value)
   };
 
   const handlePriceChange = (e) => {
@@ -125,27 +133,35 @@ const AddItem = () => {
     setLocation(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (itemImage === null) {setError("Please Upload An Image")}
-    // Perform database submission with the form data, including itemImage
-    // You can handle the image upload and storage logic in this function
-    console.log('Form submitted:', {
-      itemName,
-      itemImage,
-      itemDescription,
-      category,
-      price,
-      currency,
-      location,
-    });
+    const itemData = {
+        "item_name": itemName,
+        "image": itemImage,
+        "description": itemDescription,
+        "category_id": category,
+        "price": price,
+        "currency": currency,
+        "location": location
+    };
+    try {
+        const res = await axios.post(`${apiUrl}/additem`, itemData, {
+          headers: {
+            "Authorization" : `Bearer ${getToken()}`
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      };
   };
 
-  if (!UserLoggedStatus()) {
+    if (!UserLoggedStatus()) {
     return (
         <Typography variant="h4" sx={{ color: "white", textAlign: "center", mb: "50px", mt: "50px" }}>You're Not Logged In</Typography>
     )}
-  return (
+    
+    return (
     <ProfileContainer style={{marginTop: '50px', marginBottom: '100px'}}>
         {error && <Typography variant="h6" sx={{ color: "#86c232", textAlign: "center", mb: "25px", mt: "25px" }}>{error}</Typography>}
     <input
@@ -184,10 +200,10 @@ const AddItem = () => {
       <StyledFormControl fullWidth required margin="normal">
         <InputLabel>Category</InputLabel>
         <Select value={category} onChange={handleCategoryChange}>
-          <MenuItem value="cars">Cars</MenuItem>
-          <MenuItem value="real-estate">Real Estate</MenuItem>
-          <MenuItem value="home-accessories">Home Accessories</MenuItem>
-          <MenuItem value="electronics">Electronics</MenuItem>
+          <MenuItem value='1'>Cars</MenuItem>
+          <MenuItem value="4">Real State</MenuItem>
+          <MenuItem value="3">Home Accessories</MenuItem>
+          <MenuItem value="2">Electronics</MenuItem>
         </Select>
       </StyledFormControl>
 

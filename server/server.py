@@ -55,16 +55,16 @@ def signup_create_account():
 @app.route('/api/login', methods=["POST"])
 @cross_origin()
 def login_create_token():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None) + salt
-    hashed_password = hashlib.md5(password.encode()).hexdigest()
-    conn = get_db_connection()
-    user = conn.execute("select * from UserTable where Email = ?", [email]).fetchone()
-    if email != user['Email'] or hashed_password != user['Password']:
-        return {"msg": "Wrong email or password"}, 401
-    access_token = create_access_token(identity=email)
-    response = {"access_token":access_token}
-    return response
+        email = request.json.get("email", None)
+        password = request.json.get("password", None) + salt
+        hashed_password = hashlib.md5(password.encode()).hexdigest()
+        conn = get_db_connection()
+        user = conn.execute("select * from UserTable where Email = ?", [email]).fetchone()
+        if email != user['Email'] or hashed_password != user['Password']:
+            return {"error": "Invalid Credentials"}, 401
+        access_token = create_access_token(identity=email)
+        response = {"access_token":access_token}
+        return response
 
 # Logout
 @app.route("/api/logout", methods=["POST"])
@@ -137,15 +137,15 @@ def all_page():
             })
     return jsonify(res)
 
-# Home Items (Returns 8 Recent Items From Each Category)
+# Home Items (Returns 10 Recent Items From Each Category)
 @app.route("/api/home", methods=["POST", "GET"])
 @cross_origin()
 def home_page():
     conn = get_db_connection()
     items = conn.execute('''
     SELECT * FROM (
-        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID) AS rn FROM ItemsTable WHERE Currency = 'USD') 
-        AS subquery WHERE rn <= 8;''').fetchall()
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID ORDER BY ID) AS rn FROM ItemsTable WHERE Currency = 'USD') 
+        AS subquery WHERE rn <= 10;''').fetchall()
     res = []
     for row in items:
             res.append({
@@ -296,25 +296,28 @@ def delete_listing(item_id):
     return jsonify({"message": "Item deleted successfully"}), 200
 
 # Add Item
-@app.route('/api/add', methods=["POST", "GET"])
+@app.route('/api/additem', methods=["POST", "GET"])
 @cross_origin()
 @jwt_required()
 def add_item():
+    conn = get_db_connection()
+    current_user = get_jwt_identity()
+    user = conn.execute("SELECT * FROM UserTable WHERE Email = ?", [current_user]).fetchone()
     data = request.get_json()
-    user_id = data.get('user_id')
     category_id = data.get('category_id')
     item_name = data.get('item_name')
     description = data.get('description')
     price = data.get('price')
     currency = data.get('currency')
     location = data.get('location')
-    if not user_id or not category_id or not item_name or not price or not currency or not location:
+    image = data.get('image')
+    if not user['ID'] or not category_id or not item_name or not price or not currency or not location:
         return jsonify({"message": "Missing required fields"}), 400
     with get_db_connection() as conn:
         conn.execute(
-            "INSERT INTO ItemsTable (UserID, CatagoryID, ItemName, Description, Price, Currency, Location) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (user_id, category_id, item_name, description, price, currency, location)
+            "INSERT INTO ItemsTable (UserID, CatagoryID, ItemName, Description, Price, Currency, Location, Image) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (user['ID'], category_id, item_name, description, price, currency, location, image)
         )
         conn.commit()
         return jsonify({"message": "Item added successfully"}), 201

@@ -5,6 +5,7 @@ import LinearColor from './loader';
 import getToken from './useToken';
 import { Typography } from "@mui/material";
 import { UserLoggedStatus } from './loggedInStatus';
+import ItemCard from './itemCard';
 
 
 const UserListings = () => {
@@ -51,23 +52,34 @@ const UserListings = () => {
         try {
             return data.map((item) => {
             return (
-            <div className="productCard" key={item.id}>
-                <div className="topGroup">
-                <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-                <img src={item.image} className="productImg" alt="Product-alt" />
-                <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-                </a>
-                </div>
-                <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-                <div className="productName">{item.item_name}</div>
-                <div className="productDescription">{item.description}</div>
-                <div className="productName">{item.location}</div>
-                <div className="bottomGroup">
-                <div className="productPrice">{item.price}</div>
-                <div >{item.currency}</div>
-            </div>
-            </a>
-            </div>
+              <ItemCard 
+              key={item.id}
+              id={item.id}
+              userId={item.user_id}
+              categoryId={item.category_id}
+              itemName={item.item_name}
+              description={item.description}
+              price={item.price}
+              currency={item.currency}
+              location={item.location}
+              image={item.image}/>
+            // <div className="productCard" key={item.id}>
+            //     <div className="topGroup">
+            //     <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+            //     <img src={item.image} className="productImg" alt="Product-alt" />
+            //     <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
+            //     </a>
+            //     </div>
+            //     <a href={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
+            //     <div className="productName">{item.item_name}</div>
+            //     <div className="productDescription">{item.description}</div>
+            //     <div className="productName">{item.location}</div>
+            //     <div className="bottomGroup">
+            //     <div className="productPrice">{item.price}</div>
+            //     <div >{item.currency}</div>
+            // </div>
+            // </a>
+            // </div>
             )}
         )}
         catch(e) {

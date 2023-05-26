@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-// import styled from "styled-components";
+import styled from "styled-components";
 import {apiUrl, POST} from "../../apiConfig.js"
 import "./productItem.css"
 import LinearColor from "../loader";
 import ItemCard from "../itemCard.js"
+
 
 
 export const ProductItem = () => {
@@ -41,7 +42,8 @@ export const ProductItem = () => {
       price={item.price}
       currency={item.currency}
       location={item.location}
-      image={item.image}/>)})}
+      image={item.image}/>
+      )})}
     </>
     )
   };
@@ -53,7 +55,7 @@ export const ProductItem = () => {
   });
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginLeft: "170px"}}>
     <ProductItems />
     </div>
   );
