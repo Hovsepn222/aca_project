@@ -22,7 +22,7 @@ const StyledCard = styled(Card)`
 const StyledCardContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
 `;
 
@@ -34,7 +34,7 @@ const StyledButton = styled(Button)`
   color: #86c232 !important;
   position: absolute;
   bottom: 10px; /* Adjust the value to control the vertical position */
-  right: 10px; /* Adjust the value to control the horizontal position */
+  right: -15px; /* Adjust the value to control the horizontal position */
 `;
 
 const ItemCard = (props) => {
@@ -69,15 +69,13 @@ const ItemCard = (props) => {
             {location}
           </Typography>
         </Link>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
-            {price} {currency}
-          </Typography>
-          <StyledButton size="small" onClick={() => handleClick(id)} startIcon={<FavoriteIcon />}>
-            Favorite
-          </StyledButton>
-        </div>
+        <Typography variant="h6" component="div">
+          {price} {currency}
+        </Typography>
       </StyledCardContent>
+      <StyledButton size="small" onClick={() => handleClick(id)} startIcon={<FavoriteIcon />}>
+        Favorite
+      </StyledButton>
     </StyledCard>
   );
 };
