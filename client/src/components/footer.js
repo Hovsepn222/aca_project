@@ -27,7 +27,6 @@ const SocialMediaIcons = styled.div`
 `;
 
 const IconLink = styled.a`
-  color: #474b4f;
   margin: 0 10px;
   font-size: 24px;
 `;

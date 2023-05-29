@@ -143,9 +143,9 @@ def all_page():
 def home_page():
     conn = get_db_connection()
     items = conn.execute('''
-    SELECT * FROM (
-        SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID ORDER BY ID) AS rn FROM ItemsTable WHERE Currency = 'USD') 
-        AS subquery WHERE rn <= 10;''').fetchall()
+        SELECT * FROM (
+            SELECT *, ROW_NUMBER() OVER (PARTITION BY CatagoryID ORDER BY ID DESC) AS rn FROM ItemsTable WHERE Currency = 'USD') 
+            AS subquery WHERE rn <= 11;''').fetchall()
     res = []
     for row in items:
             res.append({

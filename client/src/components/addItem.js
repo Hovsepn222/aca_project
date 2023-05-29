@@ -4,7 +4,7 @@ import { UserLoggedStatus } from './loggedInStatus';
 import { apiUrl } from '../apiConfig';
 import getToken from './useToken';
 import axios from 'axios';
-import { Typography, TextField, Select, MenuItem, Button, FormControl, InputLabel } from '@mui/material';
+import { Typography, TextField, Select, MenuItem, Button, FormControl, InputLabel, Alert } from '@mui/material';
 
 const ProfileContainer = styled.div`
   padding: 20px;
@@ -25,6 +25,8 @@ const StyledFormControl = styled(FormControl)`
       border-color: #86c232;
       color: #86c232;
     }
+    
+    color: 'white' !important;
     &:hover fieldset {
       border-color: #86c232;
     }
@@ -32,7 +34,7 @@ const StyledFormControl = styled(FormControl)`
       border-color: #86c232;
     }
     &::placeholder {
-      color: #fff;
+      color: #fff !important;
     }
   }
 `;
@@ -94,6 +96,8 @@ const AddItem = () => {
   const [currency, setCurrency] = useState('');
   const [location, setLocation] = useState('');
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
 
   const handleItemNameChange = (e) => {
     setItemName(e.target.value);
@@ -151,6 +155,7 @@ const AddItem = () => {
             "Authorization" : `Bearer ${getToken()}`
           }
         });
+        setSuccess(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       };
@@ -162,6 +167,7 @@ const AddItem = () => {
     )}
     
     return (
+      <>
     <ProfileContainer style={{marginTop: '50px', marginBottom: '100px'}}>
         {error && <Typography variant="h6" sx={{ color: "#86c232", textAlign: "center", mb: "25px", mt: "25px" }}>{error}</Typography>}
     <input
@@ -177,6 +183,7 @@ const AddItem = () => {
     Upload
   </StyledButton>
 </label> 
+  {itemImage && <img src={itemImage} alt="Uploaded Item" style={{ width: '100%', marginTop: '10px' }} />}
     <form onSubmit={handleSubmit}>
       <StyledTextField
         label="Item Name"
@@ -185,6 +192,11 @@ const AddItem = () => {
         fullWidth
         required
         margin="normal"
+        inputProps={{
+          style: {
+              color: "white"
+          }
+      }}
       />
 
       <StyledTextField
@@ -195,11 +207,16 @@ const AddItem = () => {
         fullWidth
         required
         margin="normal"
+        inputProps={{
+          style: {
+              color: "white"
+          }
+      }}
       />
 
       <StyledFormControl fullWidth required margin="normal">
-        <InputLabel>Category</InputLabel>
-        <Select value={category} onChange={handleCategoryChange}>
+        <InputLabel style={{ color: '#fff' }}>Category</InputLabel>
+        <Select value={category} onChange={handleCategoryChange}  style={{ color: '#fff' }}>
           <MenuItem value='1'>Cars</MenuItem>
           <MenuItem value="4">Real State</MenuItem>
           <MenuItem value="3">Home Accessories</MenuItem>
@@ -215,11 +232,16 @@ const AddItem = () => {
         fullWidth
         required
         margin="normal"
+        inputProps={{
+          style: {
+              color: "white"
+          }
+      }}
       />
 
       <StyledFormControl fullWidth required margin="normal">
-        <InputLabel>Currency</InputLabel>
-        <Select value={currency} onChange={handleCurrencyChange}>
+        <InputLabel  style={{ color: '#fff' }}>Currency</InputLabel>
+        <Select value={currency} onChange={handleCurrencyChange}  style={{ color: '#fff' }}>
           <MenuItem value="USD">USD</MenuItem>
           <MenuItem value="AMD">AMD</MenuItem>
         </Select>
@@ -232,6 +254,11 @@ const AddItem = () => {
         fullWidth
         required
         margin="normal"
+        inputProps={{
+          style: {
+              color: "white"
+          }
+      }}
       />
 
       <SaveButton type="submit" variant="contained" color="primary">
@@ -239,6 +266,12 @@ const AddItem = () => {
       </SaveButton>
     </form>
     </ProfileContainer>
+    {success && (
+      <Alert variant="filled" severity="success" sx={{ mb: "25px", mt: "25px" }}>
+        Item added successfully!
+      </Alert>
+    )}
+    </>
   );
 };
 

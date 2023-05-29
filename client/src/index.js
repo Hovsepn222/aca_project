@@ -19,6 +19,7 @@ import FavoriteItems from './components/favoriteItems';
 import { ProductPage } from './components/productPage/ProductPage';
 import ProfileView from './components/ProfileView';
 import AddItem from './components/addItem';
+import AboutUs from './components/aboutUs';
 
 
 const router = createBrowserRouter(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
             <Route path='/logout' element={<Logout/>}/>
             <Route path='/add' element={<AddItem/>}/>
             <Route path='/favorites' element={<FavoriteItems/>}/>
+            <Route path='/about' element={<AboutUs/>}/>
             <Route path='*' element={<NotFound />}/>
         </Route>
     )

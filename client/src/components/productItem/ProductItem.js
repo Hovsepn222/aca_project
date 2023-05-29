@@ -25,7 +25,10 @@ export const ProductItem = () => {
 
   const ProductItems = () => {
     if (!data) {
-      return (<LinearColor />);
+      return (
+      <>
+      </>
+      );
     }
     
     return (
