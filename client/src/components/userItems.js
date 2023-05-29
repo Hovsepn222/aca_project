@@ -9,10 +9,11 @@ import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { apiUrl } from "../apiConfig";
 import getToken from "./useToken";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledCard = styled(Card)`
   width: 300px;
-  margin-left: 30px;
+  margin-left: 40px;
   margin-right: 40px;
   margin-bottom: 10px;
   margin-top: 50px;
@@ -37,7 +38,14 @@ const StyledButton = styled(Button)`
   right: -15px; /* Adjust the value to control the horizontal position */
 `;
 
-const ItemCard = (props) => {
+const StyledDeleteButton = styled(Button)`
+  color: #FF0000 !important;
+  position: absolute;
+  bottom: 10px; /* Adjust the value to control the vertical position */
+  right: -15px; /* Adjust the value to control the horizontal position */
+`;
+
+const UserItems = (props) => {
   const { id, userId, categoryId, itemName, description, price, currency, location, image } = props;
 
   const handleClick = async (id) => {
@@ -76,8 +84,11 @@ const ItemCard = (props) => {
       <StyledButton size="small" onClick={() => handleClick(id)} startIcon={<FavoriteIcon />}>
         Favorite
       </StyledButton>
+      <StyledDeleteButton size="small"  component={Link} to={`/delete/${id}`} startIcon={<DeleteIcon />}>
+        Delete
+      </StyledDeleteButton>
     </StyledCard>
   );
 };
 
-export default ItemCard;
+export default UserItems;

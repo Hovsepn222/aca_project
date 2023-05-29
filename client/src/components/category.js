@@ -28,6 +28,7 @@ const Category = () => {
     }
     return data.map((item) => {
       return (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginLeft: "55px"}}>
         <ItemCard 
       key={item.id}
       id={item.id}
@@ -39,6 +40,7 @@ const Category = () => {
       currency={item.currency}
       location={item.location}
       image={item.image}/>
+      </div>
     //   <div className="productCard" key={item.id}>
     //     <div className="topGroup">
     //     <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>

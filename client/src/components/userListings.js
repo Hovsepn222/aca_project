@@ -8,6 +8,7 @@ import { AiFillDelete } from 'react-icons/ai';
 import { Typography } from "@mui/material";
 import { UserLoggedStatus } from './loggedInStatus';
 import ItemCard from './itemCard';
+import UserItems from './userItems';
 
 
 
@@ -55,8 +56,8 @@ const UserListings = () => {
         try {
             return data.map((item) => {
             return (
-              <>
-              <ItemCard 
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginLeft: "55px"}}>
+              <UserItems 
               key={item.id}
               id={item.id}
               userId={item.user_id}
@@ -66,31 +67,8 @@ const UserListings = () => {
               price={item.price}
               currency={item.currency}
               location={item.location}
-              image={item.image} />
-              <Link to={`/delete/${item.id}`} style={{ textDecoration: "none", color: "white" }}>
-                 <AiFillDelete className="deleteIcon" />
-             </Link>
-             </>
-            // <div className="productCard" key={item.id}>
-            //     <div className="topGroup">
-            //     <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-            //     <img src={item.image} className="productImg" alt="Product-alt" />
-            //     <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-            //     </Link>
-            //     <Link to={`/delete/${item.id}`} style={{ textDecoration: "none", color: "white" }}>
-            //     <AiFillDelete className="deleteIcon" />
-            // </Link>
-            //     </div>
-            //     <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-            //     <div className="productName">{item.item_name}</div>
-            //     <div className="productDescription">{item.description}</div>
-            //     <div className="productName">{item.location}</div>
-            //     <div className="bottomGroup">
-            //     <div className="productPrice">{item.price}</div>
-            //     <div >{item.currency}</div>
-            // </div>
-            // </Link>
-            // </div>
+              image={item.image}/>
+              </div>
             )}
         )}
         catch(e) {

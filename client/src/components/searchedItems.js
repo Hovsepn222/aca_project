@@ -28,6 +28,7 @@ const SearchedItems = () => {
     }
     return data.map((item) => {
       return (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginLeft: "55px"}}>
         <ItemCard 
       key={item.id}
       id={item.id}
@@ -39,23 +40,7 @@ const SearchedItems = () => {
       currency={item.currency}
       location={item.location}
       image={item.image}/>
-    //   <div className="productCard" key={item.id}>
-    //     <div className="topGroup">
-    //     <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-    //       <img src={item.image} className="productImg" alt="Product-alt" />
-    //       <img src={favorite} className="favoriteIcon" alt="favorite-icon"/>
-    //       </Link>
-    //     </div>
-    //     <Link to={`/item/${item.id}`} style={{textDecoration: "none", color: "white"}}>
-    //     <div className="productName">{item.item_name}</div>
-    //     <div className="productDescription">{item.description}</div>
-    //     <div className="productName">{item.location}</div>
-    //     <div className="bottomGroup">
-    //      <div className="productPrice">{item.price}</div>
-    //        <div >{item.currency}</div>
-    //    </div>
-    //    </Link>
-    //  </div>
+      </div>
     )});
   };
 
@@ -66,7 +51,7 @@ const SearchedItems = () => {
   }, [data]);
 
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px"}}>
     <ProductItems />
     </div>
   );

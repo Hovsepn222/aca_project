@@ -2,10 +2,10 @@ import React,{useState} from 'react'
 import axios from 'axios';
 import { apiUrl } from '../../apiConfig';
 import "./Login.css"
-import getToken, {setToken, removeToken} from '../useToken'
+import {setToken, removeToken} from '../useToken'
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../redux/logInStatus';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
 
 export function Login(props) {
